@@ -23,5 +23,4 @@
 3. **`matcher.ts`** - 碰撞算法：计算当前段落与历史索引的 Cosine / Jaccard 相似度。
 4. **`view.ts`** - 侧边栏 UI：极简 DOM 渲染，零 UI 框架依赖。
 
-## 宣言
-*Code less, vibe more. Make it work, make it yours.*
+
