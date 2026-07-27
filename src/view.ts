@@ -1,4 +1,4 @@
-import { ItemView, WorkspaceLeaf } from 'obsidian';
+import { ItemView, WorkspaceLeaf, MarkdownView } from 'obsidian';
 import { MatchResult } from './matcher';
 import SerendipityWhisperPlugin from './main';
 
@@ -58,8 +58,23 @@ export class WhisperView extends ItemView {
             
             card.createEl('div', { cls: 'whisper-card-content', text: match.content });
             
-            card.addEventListener('click', () => {
-                this.plugin.app.workspace.openLinkText(match.path, match.path, true);
+            card.addEventListener('click', async () => {
+                await this.plugin.app.workspace.openLinkText(match.path, match.path, true);
+                
+                // 给一点点时间让视图加载完成
+                setTimeout(() => {
+                    const view = this.plugin.app.workspace.getActiveViewOfType(MarkdownView);
+                    if (view && view.file && view.file.path === match.path) {
+                        const text = view.getViewData();
+                        const idx = text.indexOf(match.content);
+                        if (idx !== -1) {
+                            // 计算段落所在的行号
+                            const line = text.substring(0, idx).split('\n').length - 1;
+                            // 使用 Obsidian 原生的状态切换来滚动并高亮该行
+                            view.setEphemeralState({ line: line });
+                        }
+                    }
+                }, 100);
             });
         }
     }

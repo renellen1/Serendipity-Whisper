@@ -201,8 +201,19 @@ var WhisperView = class extends import_obsidian.ItemView {
       header.createEl("span", { cls: "whisper-card-title", text: match.file });
       header.createEl("span", { cls: "whisper-card-score", text: `${(match.score * 100).toFixed(0)}%` });
       card.createEl("div", { cls: "whisper-card-content", text: match.content });
-      card.addEventListener("click", () => {
-        this.plugin.app.workspace.openLinkText(match.path, match.path, true);
+      card.addEventListener("click", async () => {
+        await this.plugin.app.workspace.openLinkText(match.path, match.path, true);
+        setTimeout(() => {
+          const view = this.plugin.app.workspace.getActiveViewOfType(import_obsidian.MarkdownView);
+          if (view && view.file && view.file.path === match.path) {
+            const text = view.getViewData();
+            const idx = text.indexOf(match.content);
+            if (idx !== -1) {
+              const line = text.substring(0, idx).split("\n").length - 1;
+              view.setEphemeralState({ line });
+            }
+          }
+        }, 100);
       });
     }
   }
