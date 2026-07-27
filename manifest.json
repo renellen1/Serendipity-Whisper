@@ -1,0 +1,10 @@
+{
+  "id": "serendipity-whisper",
+  "name": "Serendipity Whisper",
+  "version": "1.0.0",
+  "minAppVersion": "1.6.0",
+  "description": "基于本地词频计算的静默推荐插件，辅助你在写作中发现跨越时间的连接。",
+  "author": "Renellen",
+  "authorUrl": "",
+  "isDesktopOnly": false
+}
